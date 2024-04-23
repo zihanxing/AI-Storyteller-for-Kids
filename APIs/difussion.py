@@ -24,8 +24,8 @@ def get_completion(prompt, model="gpt-4"):
 
 def get_imagePrompt(text):
     prompt = f"""
-    Based on the following sentence, provide me a prompt for image generation. It is generated for kids. \
-    example return: pixel art, a cute corgi, simple, flat colors \
+    Based on the following sentence, provide me a prompt for disney style image generation. Just return the prompt without other words. \
+    example return: disney style,one girl wearing round glasses in school dress, short skirt and socks. white shirt with black necktie \
     ```{text}```
     """
     response = get_completion(prompt)

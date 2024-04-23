@@ -55,7 +55,7 @@ def ask_question():
     q_list = pre_questions['questions']
     json_file.close()
 
-    print("Hello! Welcome to GabbyGarden! I am Gab. To listen to a story, please answer me the question.")
+    print("Hello!")
 
     conversation_log = [] # to maintain the conversation context
 
