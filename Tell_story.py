@@ -15,7 +15,7 @@ import os
 
 
 API_TOKEN="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"
-API_URL = "https://api-inference.huggingface.co/models/nerijs/pixel-art-xl"
+API_URL = "https://api-inference.huggingface.co/models/goofyai/disney_style_xl"
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
 def query(payload):

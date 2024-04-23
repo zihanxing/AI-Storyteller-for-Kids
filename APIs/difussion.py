@@ -34,7 +34,7 @@ def get_imagePrompt(text):
 
 def generate(prompt):
 
-    API_URL = "https://api-inference.huggingface.co/models/nerijs/pixel-art-xl"
+    API_URL = "https://api-inference.huggingface.co/models/goofyai/disney_style_xl"
     headers = {"Authorization": "Bearer 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"}
 
     def query(payload):
