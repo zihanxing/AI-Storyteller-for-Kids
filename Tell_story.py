@@ -195,8 +195,9 @@ def tell_story():
     img_path = "assets/pics/"
     st.audio("assets/example.mp3", format='audio/mp3')
 
-st.header("Imaginative Tales📚\n \
-    💫 An AI Storyteller for Kids with Visual Narratives💫 ")
+st.header("Imaginative Tales📚")
+st.subheader("💫 An AI Storyteller for Kids with Visual Narratives💫")
+st.write("Hi there! I am your AI Storyteller. I can narrate stories with visual narratives. Just ask me a question and I will generate a story for you. Let's get started! 🚀")
 
 # 初始设置session_state的键，如果不存在
 if 'show_html' not in st.session_state:
