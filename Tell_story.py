@@ -194,7 +194,7 @@ def display_tell_story(chunk_prompt):
 def tell_story():
     img_path = "assets/pics/"
     st.audio("assets/example.mp3", format='audio/mp3')
-
+st.write(os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"])
 st.header("Imaginative Tales📚")
 st.subheader("💫 An AI Storyteller for Kids with Visual Narratives💫")
 st.write("Hi there! I am your AI Storyteller. I can narrate stories with visual narratives. Just ask me a question and I will generate a story for you. Let's get started! 🚀")
@@ -234,7 +234,7 @@ else:
     # 显示对话式UI
     st.session_state.question, st.session_state.log = ask_question()
     st.write(st.session_state.question)
-    ans = speech_to_text(language='en',start_prompt="Let me know YOU 😊",
+    ans = speech_to_text(language='en',start_prompt="Let me know more about you😊",
                         use_container_width=True,just_once=True,key='ANS')
         
     if ans:
