@@ -211,7 +211,7 @@ def tell_story():
 ##################
 ## Streamlit UI ##
 ##################
-# st.write(os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"])
+st.write(os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"])
 st.header("Imaginative Tales📚")
 st.subheader("💫 An AI Storyteller for Kids with Visual Narratives💫")
 st.write("Hi there! I am your AI Storyteller. I can narrate stories with visual narratives. \
