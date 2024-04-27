@@ -211,7 +211,7 @@ def tell_story():
 ##################
 ## Streamlit UI ##
 ##################
-st.write(os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"])
+# st.write(os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"])
 st.header("Imaginative Tales📚")
 st.subheader("💫 An AI Storyteller for Kids with Visual Narratives💫")
 st.write("Hi there! I am your AI Storyteller. I can narrate stories with visual narratives. \
@@ -229,16 +229,17 @@ if 'question' not in st.session_state:
 if 'log' not in st.session_state:
     st.session_state.log = []
 
-# Determine the style of images to be generated
-style = ""
+# Initialize the style in session_state if not already present
+if 'style' not in st.session_state:
+    st.session_state.style = ""
+
 col3, col4 = st.columns(2)
 with col3:
     if st.button('Disney Style!'):
-        style = "disney"
+        st.session_state.style = "disney"
 with col4:
     if st.button("DC comics Style!"):
-        style = "dc comics"
-
+        st.session_state.style = "dc comics"
 
 # Display content in two buttons
 col1, col2 = st.columns(2)
@@ -258,7 +259,7 @@ if  st.session_state.show_html:
                                     st.session_state.ans,
                                     st.session_state.log)
     # st.write(chunk_prompt)
-    display_tell_story(chunk_prompt, style, API_URL_disney if style == "disney" else API_URL_comics)
+    display_tell_story(chunk_prompt, st.session_state.style, API_URL_disney if st.session_state.style == "disney" else API_URL_comics)
     del st.session_state["show_html"]
     # st.ballons()
 else:
