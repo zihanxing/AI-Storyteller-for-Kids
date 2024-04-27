@@ -6,23 +6,29 @@ import io
 import requests
 import base64
 from streamlit_mic_recorder import speech_to_text
-from APIs.storyteller import ask_question, story_trunks
-from APIs.helper import autoplay_audio
-from APIs.text2speech import get_speech_from_text
+from tools.storyteller import ask_question, story_trunks
+from tools.helper import autoplay_audio
+from tools.text2speech import get_speech_from_text
 import json
 import os
 
 
-
 API_TOKEN="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"
-API_URL = "https://api-inference.huggingface.co/models/goofyai/disney_style_xl"
+API_URL_disney = "https://api-inference.huggingface.co/models/ZachX/disney_SDXL_lora"
+API_URL_comics = "https://api-inference.huggingface.co/models/ZachX/comics_SDXL_lora"
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
-def query(payload):
-  response = requests.post(API_URL, headers=headers, json=payload)
-  return response.content
+def query(payload, API_URL):
+    """
+    Query the Lora model with the payload
+    """
+    response = requests.post(API_URL, headers=headers, json=payload)
+    return response.content
 
 def pil_to_image(images):
+    """
+    Convert PIL images to base64 strings
+    """
     image_base64=[]
     for img in images:
         img_byte_arr = io.BytesIO() 
@@ -34,6 +40,9 @@ def pil_to_image(images):
 
 
 def generate_slides_html(base64_string_image_folder):
+    """
+    Generate HTML for the slides
+    """
     slides_html = ""
     i=0
     for base64_string in base64_string_image_folder:
@@ -46,11 +55,13 @@ def generate_slides_html(base64_string_image_folder):
         </div>
         """
         slides_html += slide
-        # print(f"iiiii:{i}")
         i+=1
     return slides_html
 
-def display_tell_story(chunk_prompt):
+def display_tell_story(chunk_prompt, style, API_URL=API_URL_disney):
+    """
+    Display the story with images (with desired style) and audio
+    """
     images=[]
     chunk=[]
     
@@ -60,7 +71,7 @@ def display_tell_story(chunk_prompt):
     for i, item in enumerate(chunk_prompt):
         my_bar.progress(int((i+1)/len(chunk_prompt)*100), text=progress_text)
     # for item in chunk_prompt:
-        temp_query=query({"inputs":item[1]})
+        temp_query=query({"inputs":f'{style} style' + item[1]}, API_URL)
         images.append(Image.open(io.BytesIO(temp_query)))
         chunk.append(item[0])
 
@@ -189,18 +200,26 @@ def display_tell_story(chunk_prompt):
             """,
         height=600,
     )
-    # get_speech_from_text(chunk[0], f'strory_{0}')
-    # autoplay_audio(f'./assets/strory_{0}.mp3')
 
 def tell_story():
+    """
+    Play the story
+    """
     img_path = "assets/pics/"
     st.audio("assets/example.mp3", format='audio/mp3')
-st.write(os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"])
+
+##################
+## Streamlit UI ##
+##################
+# st.write(os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"])
 st.header("Imaginative Tales📚")
 st.subheader("💫 An AI Storyteller for Kids with Visual Narratives💫")
-st.write("Hi there! I am your AI Storyteller. I can narrate stories with visual narratives. Just ask me a question and I will generate a story for you. Let's get started! 🚀")
+st.write("Hi there! I am your AI Storyteller. I can narrate stories with visual narratives. \
+         \n 🚀 Please follow the steps below to listen to a story: \
+         \n 1. Click on 'Disney Style!' or 'DC comics Style!' to choose the style of the story. \
+         \n 2. Click on 'Let me know more about you😊' and answer the question. If you don't want to answer, click on 'Do it Again🔄' to get a new question. \
+         \n 3. Click on 'Listen To A Story📖' to listen to the story. ")
 
-# 初始设置session_state的键，如果不存在
 if 'show_html' not in st.session_state:
     st.session_state.show_html = False
 if 'ans' not in st.session_state:
@@ -210,7 +229,18 @@ if 'question' not in st.session_state:
 if 'log' not in st.session_state:
     st.session_state.log = []
 
-# 如果按钮被按下，切换状态
+# Determine the style of images to be generated
+style = ""
+col3, col4 = st.columns(2)
+with col3:
+    if st.button('Disney Style!'):
+        style = "disney"
+with col4:
+    if st.button("DC comics Style!"):
+        style = "dc comics"
+
+
+# Display content in two buttons
 col1, col2 = st.columns(2)
 with col1:
     if st.button('Listen To A Story 📖'):
@@ -218,21 +248,20 @@ with col1:
 with col2:
     if st.button("Do it Again 🔄"):
         st.session_state.show_html = False
-        
-# 根据session_state的状态显示不同的内容
+
+
+# Display different content based on the session_state
 if  st.session_state.show_html:
-    # 显示HTML UI
     with st.spinner('Generating Prompts...💪🏻'):
         time.sleep(5)
         chunk_prompt = story_trunks(st.session_state.question, 
                                     st.session_state.ans,
                                     st.session_state.log)
     # st.write(chunk_prompt)
-    display_tell_story(chunk_prompt)
+    display_tell_story(chunk_prompt, style, API_URL_disney if style == "disney" else API_URL_comics)
     del st.session_state["show_html"]
     # st.ballons()
 else:
-    # 显示对话式UI
     st.session_state.question, st.session_state.log = ask_question()
     st.write(st.session_state.question)
     ans = speech_to_text(language='en',start_prompt="Let me know more about you😊",
@@ -243,19 +272,6 @@ else:
         st.write("Now Let's Listen to a Story 🥳")
     del st.session_state["show_html"]
 
-# with st.sidebar:
-#     st.subheader("🧸 How to Play with Ask Me?")
-#     st.markdown("""
-#                  💡 Hey kiddo! Curiosity is fantastic! What can I assist you with?
-                 
-#                  💡 Little genius! Ready to unravel some mysteries?
-                 
-#                  💡 Hey curious mind! What's the question of the day?
-                 
-#                  **JUST CLICK `Ask Me` button and SAY OUTLOUD 📣 you questions**
-#                  """)
-     
 
 # tell_story()
-# pic_transit()
 
