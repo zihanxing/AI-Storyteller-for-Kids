@@ -61,7 +61,11 @@ streamlit run Tell_story.py
 ```
 
 ## To train the model
-You have to equip with a powerful GPU to train the model. The training process is time-consuming and resource-intensive. The following steps are for reference only.
+My trained lora models can be found on Hugging Face.
+1. https://huggingface.co/ZachX/comics_SDXL_lora
+2. https://huggingface.co/ZachX/disney_SDXL_lora
+
+To train a lora model of your own, you have to equip with a powerful GPU to train the model. The training process is time-consuming and resource-intensive. The following steps are for reference only.
 1. Clone the repository
 ```bash
 git clone git@github.com:zihanxing/SDXL-lora-for-kids.git
