@@ -61,6 +61,7 @@ streamlit run Tell_story.py
 ```
 
 ## To train the model
+You have to equip with a powerful GPU to train the model. The training process is time-consuming and resource-intensive. The following steps are for reference only.
 1. Clone the repository
 ```bash
 git clone git@github.com:zihanxing/SDXL-lora-for-kids.git
