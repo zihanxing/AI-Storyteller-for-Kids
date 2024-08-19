@@ -4,7 +4,7 @@ Individual Project for the course AIPI540 of the Master of Engineering in AI at 
 ## Project Description
 This project aims to create an AI storyteller for kids with visual narratives. Story is generated based on kids' preferences, and images are generated based on kids' preferred art style. The project is designed to be interactive and engaging for kids. Solving the problem of needing to create a **personalized, engaging, diverse, and interactive** story for kids, this project will provide a solution that can be used by parents, teachers, and kids themselves.
 
-**You can access the app [here](https://imaginativetales.streamlit.app/).**
+**You can access the app [here](https://imaginativetales.streamlit.app/), or demo [here](https://youtu.be/SGH6Biobluo).
 
 ## Features
 1. **Personalized Storytelling**: The AI will generate a story based on kids' preferences.
